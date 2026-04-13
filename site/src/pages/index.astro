@@ -35,11 +35,9 @@ import { site } from '../data/site';
       <!-- About -->
       <section>
         <h2>about</h2>
-        <p>
-          Senior Product Manager with extensive experience leading cross-functional teams to deliver enterprise-scale automation, AI, and cloud-based solutions. Proven ability to drive strategic alignment across engineering, product, and business stakeholders while owning complex program roadmaps from inception to execution. Skilled in stakeholder management, Agile delivery, executive reporting, and process optimization.
-        </p>
-        <p>Previously DOD Secret & DHS Public Trust Cleared</p>
-        <p class="personal">I also enjoy Star Wars, long walks on the beach, and a strong Mai Tai.</p>
+        <p>Senior Product Manager focused on automation, AI, and cloud infrastructure.</p>
+        <p>Previously DOD Secret & DHS Public Trust Cleared.</p>
+        <p>I also enjoy Star Wars, long walks on the beach, and a strong Mai Tai.</p>
       </section>
 
       <!-- Projects -->
@@ -153,7 +151,7 @@ import { site } from '../data/site';
     grid-template-columns: repeat(54, 1px);
     grid-template-rows: repeat(24, 1px);
     gap: 0;
-    background-color: #0dbdf6;
+    background-color: var(--toggle-day);
     border-radius: 49px;
     border: 1px solid var(--line);
     cursor: pointer;
@@ -163,7 +161,7 @@ import { site } from '../data/site';
   }
 
   .theme-switcher.night {
-    background-color: #272a30;
+    background-color: var(--toggle-night);
   }
 
   /* Sun / Moon circle */
@@ -189,7 +187,7 @@ import { site } from '../data/site';
     height: 0;
     transition: left 0.8s ease, background-color 0.8s ease, width 0.8s ease, height 0.8s ease;
     z-index: 1;
-    background-color: #0dbdf6;
+    background-color: var(--toggle-day);
   }
 
   .theme-switcher.night .moon-overlay {
@@ -197,7 +195,7 @@ import { site } from '../data/site';
     top: calc(4 / 29 * 100%);
     width: 18px;
     height: 18px;
-    background-color: #272a30;
+    background-color: var(--toggle-night);
   }
 
   /* Cloud balls → shrink to stars */
