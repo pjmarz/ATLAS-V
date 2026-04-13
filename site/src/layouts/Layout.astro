@@ -11,7 +11,7 @@ const {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,8 +20,18 @@ const {
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <title>{title}</title>
+    <script is:inline>
+      (function() {
+        var saved = localStorage.getItem('theme');
+        var preferred = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', preferred);
+      })();
+    </script>
   </head>
   <body>
     <slot />
@@ -29,40 +39,66 @@ const {
 </html>
 
 <style is:global>
-  :root {
-    color-scheme: dark;
-    --bg: #0b1020;
-    --bg-elev: rgba(17, 24, 39, 0.78);
-    --panel: rgba(15, 23, 42, 0.92);
-    --line: rgba(148, 163, 184, 0.18);
-    --text: #e5eefc;
-    --muted: #94a3b8;
-    --accent: #7dd3fc;
-    --accent-2: #a78bfa;
-    --shadow: 0 20px 60px rgba(2, 6, 23, 0.45);
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* ---- Dark theme (default) ---- */
+  [data-theme="dark"] {
+    --bg: #0a0a0a;
+    --text: #c8c8c8;
+    --text-strong: #e8e8e8;
+    --muted: #666;
+    --line: rgba(255, 255, 255, 0.15);
+    --toggle-bg: #222;
+    --toggle-fg: #e8e8e8;
   }
 
-  * {
-    box-sizing: border-box;
+  /* ---- Light theme ---- */
+  [data-theme="light"] {
+    --bg: #fafafa;
+    --text: #444;
+    --text-strong: #111;
+    --muted: #999;
+    --line: rgba(0, 0, 0, 0.12);
+    --toggle-bg: #e4e4e4;
+    --toggle-fg: #333;
   }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   html {
-    background:
-      radial-gradient(circle at top, rgba(125, 211, 252, 0.18), transparent 30%),
-      radial-gradient(circle at 80% 20%, rgba(167, 139, 250, 0.14), transparent 24%),
-      linear-gradient(180deg, #0b1020 0%, #111827 100%);
+    background: var(--bg);
     min-height: 100%;
-    scroll-behavior: smooth;
+    transition: background 0.3s ease;
   }
 
   body {
     margin: 0;
     min-height: 100vh;
     color: var(--text);
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    transition: color 0.3s ease;
   }
 
   a {
-    color: inherit;
+    color: var(--text-strong);
+    font-weight: 500;
+    text-decoration: none;
   }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  strong, b {
+    color: var(--text-strong);
+    font-weight: 600;
+  }
+
+  /* Signature swap */
+  [data-theme="dark"] .sig-black { display: none; }
+  [data-theme="dark"] .sig-white { display: block; }
+  [data-theme="light"] .sig-black { display: block; }
+  [data-theme="light"] .sig-white { display: none; }
 </style>
