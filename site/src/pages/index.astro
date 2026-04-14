@@ -4,35 +4,23 @@ import { site } from '../data/site';
 ---
 
 <Layout title={site.title} description={site.description}>
-  <main>
-    <div class="container">
-      <!-- Theme toggle — animated sun/moon/cloud/star pill -->
-      <button class="theme-switcher" id="theme-toggle" aria-label="Switch theme">
-        <div class="sun"></div>
-        <div class="moon-overlay"></div>
-        <div class="cloud-ball" id="ball1"></div>
-        <div class="cloud-ball" id="ball2"></div>
-        <div class="cloud-ball" id="ball3"></div>
-        <div class="cloud-ball" id="ball4"></div>
-        <div class="star" id="star1"></div>
-        <div class="star" id="star2"></div>
-        <div class="star" id="star3"></div>
-        <div class="star" id="star4"></div>
-      </button>
+  <form>
+    <!-- Toggle must come first so ~ sibling selector can reach .curtain -->
+    <input id="dark-mode" class="toggle" type="checkbox" name="Dark mode" role="switch" value="on" />
+    <label for="dark-mode" class="sr">Dark Mode</label>
 
-      <!-- Header: name + signature -->
+    <!-- Site content -->
+    <main>
       <header>
         <div class="header-row">
           <h1>peter j. marino</h1>
           <div class="signature">
-            <img class="sig-black" src="/sig-black.png" alt="PJM signature" />
-            <img class="sig-white" src="/sig-white.png" alt="PJM signature" />
+            <img src="/sig-black.png" alt="PJM signature" />
           </div>
         </div>
         <hr />
       </header>
 
-      <!-- About -->
       <section>
         <h2>about</h2>
         <p>Senior Product Manager focused on automation, AI, and cloud infrastructure.</p>
@@ -40,7 +28,6 @@ import { site } from '../data/site';
         <p>I also enjoy Star Wars, long walks on the beach, and a strong Mai Tai.</p>
       </section>
 
-      <!-- Projects -->
       <section>
         <h2>projects</h2>
         <p>
@@ -68,7 +55,6 @@ import { site } from '../data/site';
         </ul>
       </section>
 
-      <!-- Links -->
       <section>
         <h2>links</h2>
         <p>
@@ -77,39 +63,139 @@ import { site } from '../data/site';
           <a href="mailto:peter.marino2@gmail.com">email</a>
         </p>
       </section>
-    </div>
-  </main>
+    </main>
+
+    <!-- Curtain must come LAST so `.toggle:checked ~ .curtain` reaches it -->
+    <div class="curtain"></div>
+  </form>
 </Layout>
 
-<script>
-  const toggle = document.getElementById('theme-toggle');
-  if (toggle) {
-    // Sync toggle class with initial theme
-    if (document.documentElement.getAttribute('data-theme') === 'dark') {
-      toggle.classList.add('night');
-    }
-    toggle.addEventListener('click', () => {
-      toggle.classList.toggle('night');
-      const isDark = toggle.classList.contains('night');
-      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
+<style is:global>
+  /* ---- CodePen base (unchanged) ---- */
+  * {
+    border: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
-</script>
-
-<style>
-  main {
+  :root {
+    --dur: 0.3s;
+  }
+  body, input {
+    color: hsl(0, 0%, 10%);
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background: hsl(0, 0%, 90%);
     min-height: 100vh;
-    padding-top: clamp(60px, 15vh, 140px);
   }
 
-  .container {
+  form, .toggle:before, .toggle:after {
+    background: hsl(0, 0%, 90%);
+  }
+  form, .toggle {
+    position: relative;
+  }
+  form {
+    min-height: 100vh;
+  }
+
+  .curtain, .sr, .toggle:before, .toggle:after {
+    position: absolute;
+  }
+  .curtain, .toggle:before, .toggle:after {
+    transition: transform var(--dur);
+  }
+  .curtain, .toggle:before, .toggle:checked:after {
+    transition-timing-function: ease-out;
+  }
+  .curtain, .sr {
+    top: 0;
+    left: 0;
+  }
+
+  /* Curtain — full page, sweeps via mix-blend-mode: difference */
+  .curtain {
+    background: hsl(0, 0%, 100%);
+    mix-blend-mode: difference;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    z-index: 999;
+  }
+
+  .sr, .toggle {
+    overflow: hidden;
+  }
+  .sr {
+    clip: rect(1px, 1px, 1px, 1px);
+    color: transparent;
+    width: 1px;
+    height: 1px;
+  }
+
+  /* Toggle — fixed top-right */
+  .toggle {
+    background: currentColor;
+    border-radius: 0.75em;
+    cursor: pointer;
+    width: 3em;
+    height: 1.5em;
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    z-index: 100;
+    font-size: 18px;
+  }
+  .toggle:before, .toggle:after {
+    border-radius: 50%;
+    content: "";
+    display: block;
+    top: 0.25em;
+    left: 0.25em;
+    width: 1em;
+    height: 1em;
+  }
+  .toggle:before, .toggle:checked:after {
+    transition-delay: 0s;
+  }
+  .toggle:checked:before, .toggle:after {
+    transition-delay: calc(var(--dur) * 0.75);
+    transition-timing-function: cubic-bezier(0.3, 1.6, 0.5, 0.7);
+  }
+  .toggle:before {
+    transform: translateX(-1.5em);
+  }
+  .toggle:checked:before {
+    transform: translateX(1.5em);
+  }
+  .toggle:checked:after {
+    transform: translateX(3em);
+  }
+  .toggle:checked ~ .curtain {
+    transform: scaleX(1);
+  }
+  .toggle:focus {
+    outline: transparent;
+  }
+
+  /* ---- Site content ---- */
+  main {
     max-width: 760px;
     margin: 0 auto;
-    padding: 0 32px 60px;
+    padding: clamp(80px, 15vh, 150px) 32px 60px;
   }
 
-  /* ---- Header ---- */
   header {
     margin-bottom: 48px;
   }
@@ -125,7 +211,6 @@ import { site } from '../data/site';
     font-family: 'EB Garamond', Georgia, serif;
     font-size: clamp(28px, 4vw, 36px);
     font-weight: 400;
-    color: var(--text-strong);
     letter-spacing: -0.01em;
     line-height: 1.2;
   }
@@ -138,109 +223,9 @@ import { site } from '../data/site';
 
   hr {
     border: none;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
   }
 
-  /* ---- Toggle — animated sun/moon/cloud/star pill ---- */
-  .theme-switcher {
-    position: fixed;
-    top: 20px;
-    right: 24px;
-    z-index: 100;
-    display: grid;
-    grid-template-columns: repeat(54, 1px);
-    grid-template-rows: repeat(24, 1px);
-    gap: 0;
-    background-color: var(--toggle-day);
-    border-radius: 49px;
-    border: 1px solid var(--line);
-    cursor: pointer;
-    transition: background-color 0.8s ease, border-color 0.8s ease;
-    appearance: none;
-    padding: 0;
-  }
-
-  .theme-switcher.night {
-    background-color: var(--toggle-night);
-  }
-
-  /* Sun / Moon circle */
-  .sun {
-    background-color: #fabc1c;
-    grid-column: 3 / 23;
-    grid-row: 3 / 23;
-    border-radius: 50%;
-    transition: grid-column 0.8s ease, background-color 0.8s ease;
-    height: 20px;
-  }
-
-  .theme-switcher.night .sun {
-    grid-column: 33 / 53;
-    background-color: #fffdf2;
-  }
-
-  /* Moon crescent overlay */
-  .moon-overlay {
-    position: absolute;
-    border-radius: 50%;
-    width: 0;
-    height: 0;
-    transition: left 0.8s ease, background-color 0.8s ease, width 0.8s ease, height 0.8s ease;
-    z-index: 1;
-    background-color: var(--toggle-day);
-  }
-
-  .theme-switcher.night .moon-overlay {
-    left: calc(28 / 54 * 100%);
-    top: calc(4 / 29 * 100%);
-    width: 18px;
-    height: 18px;
-    background-color: var(--toggle-night);
-  }
-
-  /* Cloud balls → shrink to stars */
-  .cloud-ball {
-    background-color: #fffdf2;
-    border-radius: 50%;
-    width: 9px;
-    height: 9px;
-    position: absolute;
-    transition: all 0.8s ease;
-    z-index: 2;
-  }
-
-  #ball1 { top: calc(8 / 24 * 100%); left: calc(12 / 54 * 100%); }
-  #ball2 { top: calc(8 / 24 * 100%); left: calc(17 / 54 * 100%); }
-  #ball3 { top: calc(8 / 24 * 100%); left: calc(22 / 54 * 100%); }
-  #ball4 { top: calc(6 / 24 * 100%); left: calc(17 / 54 * 100%); }
-
-  .theme-switcher.night #ball1 { top: calc(16 / 24 * 100%); left: calc(16 / 54 * 100%); width: 2px; height: 2px; }
-  .theme-switcher.night #ball2 { top: calc(3 / 24 * 100%); left: calc(22 / 54 * 100%); width: 2px; height: 2px; }
-  .theme-switcher.night #ball3 { top: calc(10 / 24 * 100%); left: calc(29 / 54 * 100%); width: 2px; height: 2px; }
-  .theme-switcher.night #ball4 { top: calc(5 / 24 * 100%); left: calc(34 / 54 * 100%); width: 2px; height: 2px; }
-
-  /* Stars — fade in on dark mode */
-  .star {
-    background-color: #fffdf2;
-    width: 1px;
-    height: 1px;
-    position: absolute;
-    opacity: 0;
-    border-radius: 50%;
-    transition: opacity 0.8s ease;
-  }
-
-  #star1 { top: calc(7 / 24 * 100%); left: calc(10 / 54 * 100%); }
-  #star2 { top: calc(9 / 24 * 100%); left: calc(16 / 54 * 100%); }
-  #star3 { top: calc(13 / 24 * 100%); left: calc(23 / 54 * 100%); }
-  #star4 { top: calc(18 / 24 * 100%); left: calc(29 / 54 * 100%); }
-
-  .theme-switcher.night #star1,
-  .theme-switcher.night #star2,
-  .theme-switcher.night #star3,
-  .theme-switcher.night #star4 { opacity: 1; }
-
-  /* ---- Sections ---- */
   section {
     margin-bottom: 40px;
   }
@@ -249,7 +234,6 @@ import { site } from '../data/site';
     font-family: 'EB Garamond', Georgia, serif;
     font-size: clamp(20px, 3vw, 24px);
     font-weight: 400;
-    color: var(--text-strong);
     margin-bottom: 12px;
     letter-spacing: -0.01em;
   }
@@ -258,15 +242,18 @@ import { site } from '../data/site';
     margin-bottom: 8px;
   }
 
-  .muted {
-    color: var(--muted);
-    font-size: 14px;
-    margin-top: 4px;
+  a {
+    color: inherit;
+    font-weight: 500;
+    text-decoration: none;
   }
 
-  .personal {
-    font-style: italic;
-    color: var(--muted);
+  a:hover {
+    text-decoration: underline;
+  }
+
+  strong, b {
+    font-weight: 600;
   }
 
   .project-entry {
@@ -277,7 +264,6 @@ import { site } from '../data/site';
     padding-left: 20px;
     margin-top: 4px;
     margin-bottom: 8px;
-    color: var(--muted);
     font-size: 14px;
   }
 
@@ -285,14 +271,16 @@ import { site } from '../data/site';
     margin-bottom: 2px;
   }
 
-  /* ---- Mobile ---- */
   @media (max-width: 480px) {
     .signature img {
       height: 55px;
     }
-
     .header-row {
       gap: 12px;
     }
   }
 </style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
