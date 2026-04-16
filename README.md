@@ -1,8 +1,8 @@
 # ATLAS-V
 
-Personal website for **welcometomarz.net** - a minimal, text-driven landing page for Peter J. Marino.
+Personal website for **peterjmarino.com** - a minimal, text-driven landing page for Peter J. Marino.
 
-Live site: **https://welcometomarz.net**
+Live site: **https://peterjmarino.com**
 
 Built with [Astro](https://astro.build) and deployed to [Cloudflare Pages](https://pages.cloudflare.com) via **GitHub Actions**.
 
