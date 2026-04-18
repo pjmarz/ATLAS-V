@@ -4,283 +4,325 @@ import { site } from '../data/site';
 ---
 
 <Layout title={site.title} description={site.description}>
-  <form>
-    <!-- Toggle must come first so ~ sibling selector can reach .curtain -->
-    <input id="dark-mode" class="toggle" type="checkbox" name="Dark mode" role="switch" value="on" />
-    <label for="dark-mode" class="sr">Dark Mode</label>
+  <div class="shell">
+    <input id="dark-mode" class="toggle" type="checkbox" role="switch" aria-label="Dark mode" checked />
 
-    <!-- Site content -->
     <main>
       <header>
         <div class="header-row">
-          <h1>peter j. marino</h1>
-          <div class="signature">
-            <img src="/sig-black.png" alt="PJM signature" />
-          </div>
+          <h1 class="wordmark">peter j. marino</h1>
+          <img class="signature" src="/sig-black.png" alt="PJM signature" />
         </div>
         <hr />
       </header>
 
-      <section>
+      <section class="about">
         <h2>about</h2>
         <p>Senior Product Manager focused on automation, AI, and cloud infrastructure.</p>
-        <p>Previously DOD Secret & DHS Public Trust Cleared.</p>
+        <p>Previously DOD Secret &amp; DHS Public Trust Cleared.</p>
         <p>I also enjoy Star Wars, long walks on the beach, and a strong Mai Tai.</p>
       </section>
 
       <section>
-        <h2>projects</h2>
-        <p>
-          <a href="https://github.com/pjmarz/LUMINAL" target="_blank" rel="noreferrer">LUMINAL</a> | self-hosted systems and automation environment
-        </p>
-        <ul>
-          <li>a project directory and service environment built to develop, run, and refine automation, AI, and orchestration workflows</li>
-          <li>integrates open-source tools and custom services into a practical workspace for experimentation and day-to-day use</li>
-        </ul>
+        <h2>highlighted projects</h2>
+        <div class="projects">
+          <article class="project">
+            <div class="title"><a href="https://github.com/pjmarz/LUMINAL" target="_blank" rel="noreferrer">LUMINAL</a></div>
+            <div class="tagline">self-hosted AI automation platform</div>
+            <ul class="project-notes">
+              <li>runs on a dedicated Proxmox VM with GPU passthrough, split into two areas: Automation and Midnight, a custom AI chatbot</li>
+              <li>Automation — n8n for workflow orchestration, paired with Home Assistant and Bilbo, a voice assistant running the same Ollama model that powers Midnight</li>
+              <li>Midnight — a fine-tuned gemma4:e4b served via Ollama and OpenWebUI, with Qdrant for vector search and Cloudflare Access SSO (Google OAuth) at the front door</li>
+            </ul>
+          </article>
 
-        <p class="project-entry">
-          <a href="https://github.com/pjmarz/HELIOS" target="_blank" rel="noreferrer">HELIOS</a> | self-hosted media and infrastructure environment
-        </p>
-        <ul>
-          <li>a project directory and service environment built to operate and manage a media stack and related homelab services</li>
-          <li>brings together open-source software like Radarr, Sonarr, and other supporting tools in a setup focused on reliability and automation</li>
-        </ul>
-
-        <p class="project-entry">
-          <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noreferrer">OpenClaw</a> | personal AI assistant and automation workflows
-        </p>
-        <ul>
-          <li>used as a persistent personal assistant for daily coordination, research, and project work</li>
-          <li>supports chat-based automation, background tasks, and hands-on management across homelab and personal systems</li>
-        </ul>
+          <article class="project">
+            <div class="title"><a href="https://github.com/pjmarz/HELIOS" target="_blank" rel="noreferrer">HELIOS</a></div>
+            <div class="tagline">self-hosted media delivery for the household</div>
+            <ul class="project-notes">
+              <li>a dedicated Proxmox VM with GPU passthrough running Plex at its center, wrapped in the *arr stack (Radarr, Sonarr, Prowlarr, Bazarr), SABnzbd, and Seerr for automated acquisition</li>
+              <li>Portainer, Homarr, and Tautulli handle container management, the dashboard, and viewing analytics</li>
+            </ul>
+          </article>
+        </div>
       </section>
 
-      <section>
-        <h2>links</h2>
-        <p>
-          <a href="https://linkedin.com/in/pjmarz" target="_blank" rel="noreferrer">linkedin</a> |
-          <a href="https://github.com/pjmarz" target="_blank" rel="noreferrer">github</a> |
-          <a href="mailto:peter.marino2@gmail.com">email</a>
-        </p>
+      <section class="links-section">
+        <div class="links-icons">
+          <a href="https://linkedin.com/in/pjmarz" target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+              <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.28V1.72C24 .77 23.2 0 22.22 0z" />
+            </svg>
+            <span class="sr">LinkedIn</span>
+          </a>
+          <a href="https://github.com/pjmarz" target="_blank" rel="noreferrer" aria-label="GitHub" title="GitHub">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+              <path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.1.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.18 0 0 1-.32 3.3 1.23a11.4 11.4 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.82.58A12 12 0 0 0 12 .3" />
+            </svg>
+            <span class="sr">GitHub</span>
+          </a>
+          <a href="mailto:peter.marino2@gmail.com" aria-label="Email" title="Email">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2.5" y="5" width="19" height="14" rx="1.5" />
+              <path d="m3.5 6.5 8.5 6.5 8.5-6.5" />
+            </svg>
+            <span class="sr">Email</span>
+          </a>
+        </div>
       </section>
+
+      <div class="colophon">
+        <span>made with <svg class="heart" viewBox="0 0 24 24" width="11" height="11" aria-label="love" role="img"><path fill="currentColor" d="M12 21s-7.5-4.6-10-10a5.5 5.5 0 0 1 10-3.5A5.5 5.5 0 0 1 22 11c-2.5 5.4-10 10-10 10z" /></svg> by me · <a href="https://github.com/pjmarz/ATLAS-V" target="_blank" rel="noreferrer">atlas-v</a></span>
+      </div>
     </main>
 
-    <!-- Curtain must come LAST so `.toggle:checked ~ .curtain` reaches it -->
     <div class="curtain"></div>
-  </form>
+  </div>
 </Layout>
 
 <style is:global>
-  /* ---- CodePen base (unchanged) ---- */
-  * {
-    border: 0;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; border: 0; }
+  html, body { min-height: 100%; }
+
   :root {
-    --dur: 0.3s;
+    --paper: #e8e6e1;
+    --ink: #141210;
+    --ink-soft: #4a4641;
+    --ink-faint: #8a857d;
+    --rule: rgba(20, 18, 16, 0.14);
+    --rule-strong: rgba(20, 18, 16, 0.28);
   }
-  body, input {
-    color: hsl(0, 0%, 10%);
-    font-family: 'Inter', -apple-system, system-ui, sans-serif;
-    font-size: 15px;
-    font-weight: 300;
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-  }
+
   body {
-    background: hsl(0, 0%, 90%);
-    min-height: 100vh;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01", "cv11";
   }
 
-  form, .toggle:before, .toggle:after {
-    background: hsl(0, 0%, 90%);
-  }
-  form, .toggle {
-    position: relative;
-  }
-  form {
-    min-height: 100vh;
-  }
+  .shell { position: relative; min-height: 100vh; }
 
-  .curtain, .sr, .toggle:before, .toggle:after {
-    position: absolute;
-  }
-  .curtain, .toggle:before, .toggle:after {
-    transition: transform var(--dur);
-  }
-  .curtain, .toggle:before, .toggle:checked:after {
-    transition-timing-function: ease-out;
-  }
-  .curtain, .sr {
-    top: 0;
-    left: 0;
-  }
-
-  /* Curtain — full page, sweeps via mix-blend-mode: difference */
   .curtain {
-    background: hsl(0, 0%, 100%);
+    position: fixed;
+    inset: 0;
+    background: #ffffff;
     mix-blend-mode: difference;
     pointer-events: none;
-    width: 100%;
-    height: 100%;
-    position: fixed;
     transform: scaleX(0);
     transform-origin: 0 50%;
-    z-index: 999;
+    transition: transform 420ms cubic-bezier(0.65, 0, 0.1, 1);
+    z-index: 150;
   }
+  .toggle:checked ~ .curtain { transform: scaleX(1); }
 
-  .sr, .toggle {
-    overflow: hidden;
-  }
-  .sr {
-    clip: rect(1px, 1px, 1px, 1px);
-    color: transparent;
-    width: 1px;
-    height: 1px;
-  }
+  .sr { position: absolute; width: 1px; height: 1px; clip: rect(1px, 1px, 1px, 1px); overflow: hidden; }
 
-  /* Toggle — fixed top-right */
   .toggle {
-    background: currentColor;
-    border-radius: 0.75em;
-    cursor: pointer;
-    width: 3em;
-    height: 1.5em;
     -webkit-appearance: none;
     appearance: none;
-    -webkit-tap-highlight-color: transparent;
-    position: fixed;
-    top: 20px;
+    position: absolute;
+    top: 22px;
     right: 24px;
+    width: 40px;
+    height: 22px;
+    border-radius: 999px;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--rule-strong);
     z-index: 100;
-    font-size: 18px;
+    transition: border-color 200ms ease;
+    -webkit-tap-highlight-color: transparent;
   }
-  .toggle:before, .toggle:after {
-    border-radius: 50%;
+  .toggle::after {
     content: "";
-    display: block;
-    top: 0.25em;
-    left: 0.25em;
-    width: 1em;
-    height: 1em;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--ink);
+    transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .toggle:before, .toggle:checked:after {
-    transition-delay: 0s;
-  }
-  .toggle:checked:before, .toggle:after {
-    transition-delay: calc(var(--dur) * 0.75);
-    transition-timing-function: cubic-bezier(0.3, 1.6, 0.5, 0.7);
-  }
-  .toggle:before {
-    transform: translateX(-1.5em);
-  }
-  .toggle:checked:before {
-    transform: translateX(1.5em);
-  }
-  .toggle:checked:after {
-    transform: translateX(3em);
-  }
-  .toggle:checked ~ .curtain {
-    transform: scaleX(1);
-  }
-  .toggle:focus {
-    outline: transparent;
-  }
+  .toggle:checked::after { transform: translateX(18px); }
+  .toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
-  /* ---- Site content ---- */
   main {
-    max-width: 760px;
+    max-width: 680px;
     margin: 0 auto;
-    padding: clamp(80px, 15vh, 150px) 32px 60px;
+    padding: clamp(56px, 10vh, 96px) 32px clamp(72px, 10vh, 120px);
   }
 
-  header {
-    margin-bottom: 48px;
-  }
+  header { margin-bottom: 40px; }
 
   .header-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .wordmark {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(32px, 5vw, 44px);
+    line-height: 1;
+    letter-spacing: -0.015em;
+  }
+
+  .signature {
+    width: 104px;
+    height: auto;
+    opacity: 0.92;
+    transform: translateY(-4px) rotate(-2deg);
+    transform-origin: bottom right;
+  }
+
+  header hr {
+    border-top: 1px solid var(--rule);
+    width: 100%;
+  }
+
+  section { margin-bottom: 40px; }
+  section:last-of-type { margin-bottom: 0; }
+
+  h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: lowercase;
+    color: var(--ink-faint);
     margin-bottom: 20px;
   }
 
-  h1 {
-    font-family: 'EB Garamond', Georgia, serif;
-    font-size: clamp(28px, 4vw, 36px);
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
-  }
-
-  .signature img {
-    height: 70px;
-    width: auto;
-    border-radius: 4px;
-  }
-
-  hr {
-    border: none;
-    border-top: 1px solid rgba(0, 0, 0, 0.15);
-  }
-
-  section {
-    margin-bottom: 40px;
-  }
-
-  h2 {
-    font-family: 'EB Garamond', Georgia, serif;
-    font-size: clamp(20px, 3vw, 24px);
-    font-weight: 400;
-    margin-bottom: 12px;
-    letter-spacing: -0.01em;
-  }
-
-  p {
-    margin-bottom: 8px;
-  }
-
-  a {
-    color: inherit;
-    font-weight: 500;
-    text-decoration: none;
-  }
-
-  a:hover {
-    text-decoration: underline;
-  }
-
-  strong, b {
-    font-weight: 600;
-  }
-
-  .project-entry {
-    margin-top: 20px;
-  }
-
-  ul {
-    padding-left: 20px;
-    margin-top: 4px;
-    margin-bottom: 8px;
+  .about p {
     font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 10px;
+    color: var(--ink);
+    max-width: 56ch;
   }
 
-  li {
-    margin-bottom: 2px;
+  .projects { border-top: 1px solid var(--rule); }
+  .project {
+    padding: 22px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .project .title {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .project .title a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 150ms ease;
+  }
+  .project .title a:hover { border-bottom-color: var(--ink); }
+  .project .tagline {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    margin-bottom: 10px;
+    max-width: 52ch;
+  }
+  .project .project-notes {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .project .project-notes li {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 56ch;
+    padding-left: 14px;
+    position: relative;
+  }
+  .project .project-notes li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 6px;
+    height: 1px;
+    background: var(--ink-faint);
   }
 
-  @media (max-width: 480px) {
-    .signature img {
-      height: 55px;
-    }
-    .header-row {
-      gap: 12px;
-    }
+  .links-section { margin-bottom: 0; }
+
+  .links-icons {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    justify-content: center;
+  }
+  .links-icons a {
+    color: var(--ink);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    transition: color 150ms ease, background 150ms ease;
+  }
+  .links-icons a:hover {
+    color: var(--ink);
+    background: var(--rule);
+  }
+  .links-icons svg { display: block; }
+
+  .colophon {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: lowercase;
+    color: var(--ink-faint);
+  }
+  .colophon .heart {
+    display: inline-block;
+    vertical-align: -1px;
+    margin-left: 2px;
+    color: var(--ink-faint);
+  }
+  .colophon a {
+    color: inherit;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+    transition: border-color 150ms ease, color 150ms ease;
+  }
+  .colophon a:hover {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+  }
+
+  @media (max-width: 560px) {
+    main { padding: 72px 22px 80px; }
+    header { margin-bottom: 56px; }
+    .header-row { grid-template-columns: 1fr; gap: 16px; }
+    .signature { width: 88px; justify-self: start; transform: rotate(-2deg); }
+    .links-icons { gap: 18px; }
+    .colophon { flex-direction: column; gap: 8px; }
   }
 </style>
-
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
