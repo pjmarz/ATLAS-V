@@ -1,6 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import { site } from '../data/site';
+import sigBlack from '../assets/sig-black.png';
 ---
 
 <Layout title={site.title} description={site.description}>
@@ -11,7 +13,7 @@ import { site } from '../data/site';
       <header>
         <div class="header-row">
           <h1 class="wordmark">peter j. marino</h1>
-          <img class="signature" src="/sig-black.png" alt="PJM signature" />
+          <Image class="signature" src={sigBlack} alt="PJM signature" width={208} densities={[1, 2]} />
         </div>
         <hr />
       </header>
