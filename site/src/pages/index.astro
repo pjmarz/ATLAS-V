@@ -2,7 +2,11 @@
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import { site } from '../data/site';
+import { projects } from '../data/projects';
 import sigBlack from '../assets/sig-black.png';
+
+const technicalProjects = projects.filter((project) => project.category === 'technical');
+const initiatives = projects.filter((project) => project.category === 'initiative');
 ---
 
 <Layout title={site.title} description={site.description}>
@@ -26,26 +30,47 @@ import sigBlack from '../assets/sig-black.png';
       </section>
 
       <section>
-        <h2>highlighted projects</h2>
+        <h2>technical projects</h2>
         <div class="projects">
-          <article class="project">
-            <div class="title"><a href="https://github.com/pjmarz/LUMINAL" target="_blank" rel="noreferrer">LUMINAL</a></div>
-            <div class="tagline">self-hosted AI automation platform</div>
-            <ul class="project-notes">
-              <li>runs on a dedicated Proxmox VM with GPU passthrough, split into two areas: Automation and Midnight, a custom AI chatbot</li>
-              <li>Automation — n8n for workflow orchestration, paired with Home Assistant and Bilbo, a voice assistant running the same Ollama model that powers Midnight</li>
-              <li>Midnight — a fine-tuned gemma4:e4b served via Ollama and OpenWebUI, with Qdrant for vector search and Cloudflare Access SSO (Google OAuth) at the front door</li>
-            </ul>
-          </article>
+          {technicalProjects.map((project) => (
+            <article class="project">
+              <div class="title">
+                {project.href ? <a href={project.href} target="_blank" rel="noreferrer">{project.title}</a> : project.title}
+              </div>
+              <div class="tagline">{project.tagline}</div>
+              <ul class="project-notes">
+                {project.notes.map((note) => <li>{note}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
 
-          <article class="project">
-            <div class="title"><a href="https://github.com/pjmarz/HELIOS" target="_blank" rel="noreferrer">HELIOS</a></div>
-            <div class="tagline">self-hosted media delivery for the household</div>
-            <ul class="project-notes">
-              <li>a dedicated Proxmox VM with GPU passthrough running Plex at its center, wrapped in the *arr stack (Radarr, Sonarr, Prowlarr, Bazarr), SABnzbd, and Seerr for automated acquisition</li>
-              <li>Portainer, Homarr, and Tautulli handle container management, the dashboard, and viewing analytics</li>
-            </ul>
-          </article>
+      <section>
+        <h2>strategic initiatives</h2>
+        <div class="projects">
+          {initiatives.map((project) => (
+            <article class="project initiative">
+              <div class="title">{project.title}</div>
+              <div class="tagline">{project.tagline}</div>
+              <ul class="project-notes">
+                {project.notes.map((note) => <li>{note}</li>)}
+              </ul>
+              {project.artifacts && (
+                <div class="project-artifacts">
+                  {project.artifacts.map((artifact) => (
+                    <a
+                      href={artifact.href}
+                      data-doc-preview
+                      data-doc-title={`${project.title}, ${artifact.label}`}
+                    >
+                      {artifact.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </article>
+          ))}
         </div>
       </section>
 
@@ -73,14 +98,111 @@ import sigBlack from '../assets/sig-black.png';
         </div>
       </section>
 
+      <dialog class="doc-modal" id="doc-preview-modal" aria-labelledby="doc-preview-title">
+        <div class="doc-modal__surface">
+          <div class="doc-modal__header">
+            <div>
+              <p class="doc-modal__eyebrow">artifact preview</p>
+              <h3 id="doc-preview-title">Document preview</h3>
+            </div>
+            <button type="button" class="doc-modal__close" data-doc-close aria-label="Close document preview">close</button>
+          </div>
+          <div class="doc-modal__body">
+            <iframe id="doc-preview-frame" title="Initiative artifact preview" loading="lazy" referrerpolicy="no-referrer"></iframe>
+          </div>
+        </div>
+      </dialog>
+
       <div class="colophon">
-        <span>made with <svg class="heart" viewBox="0 0 24 24" width="11" height="11" aria-label="love" role="img"><path fill="currentColor" d="M12 21s-7.5-4.6-10-10a5.5 5.5 0 0 1 10-3.5A5.5 5.5 0 0 1 22 11c-2.5 5.4-10 10-10 10z" /></svg>
+        <span>
+          made with
+          <svg class="heart" viewBox="0 0 24 24" width="11" height="11" aria-label="love" role="img"><path fill="currentColor" d="M12 21s-7.5-4.6-10-10a5.5 5.5 0 0 1 10-3.5A5.5 5.5 0 0 1 22 11c-2.5 5.4-10 10-10 10z" /></svg>
+        </span>
       </div>
     </main>
 
     <div class="curtain"></div>
   </div>
 </Layout>
+
+<script is:inline>
+  const modal = document.getElementById('doc-preview-modal');
+  const frame = document.getElementById('doc-preview-frame');
+  const title = document.getElementById('doc-preview-title');
+  const closeButton = document.querySelector('[data-doc-close]');
+  const openers = document.querySelectorAll('[data-doc-preview]');
+
+  const buildPreviewSrc = (href) => href;
+
+  const resetPreview = () => {
+    document.documentElement.classList.remove('has-doc-modal');
+    if (frame instanceof HTMLIFrameElement) {
+      frame.setAttribute('src', 'about:blank');
+    }
+    if (title instanceof HTMLElement) {
+      title.textContent = 'Document preview';
+    }
+  };
+
+  const closePreview = () => {
+    if (!(modal instanceof HTMLDialogElement) || !modal.open) return;
+    if (modal.classList.contains('is-closing')) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      modal.close();
+      return;
+    }
+
+    modal.classList.add('is-closing');
+    const onEnd = (event) => {
+      if (event.target !== modal) return;
+      modal.removeEventListener('animationend', onEnd);
+      modal.classList.remove('is-closing');
+      modal.close();
+    };
+    modal.addEventListener('animationend', onEnd);
+  };
+
+  if (modal instanceof HTMLDialogElement && frame instanceof HTMLIFrameElement && title instanceof HTMLElement) {
+    const mobileQuery = window.matchMedia('(max-width: 640px)');
+
+    openers.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const href = link.getAttribute('href');
+        if (!href) {
+          return;
+        }
+
+        event.preventDefault();
+
+        if (mobileQuery.matches) {
+          window.open(href, '_blank', 'noopener');
+          return;
+        }
+
+        title.textContent = link.getAttribute('data-doc-title') || 'Document preview';
+        frame.setAttribute('src', buildPreviewSrc(href));
+        document.documentElement.classList.add('has-doc-modal');
+        modal.showModal();
+      });
+    });
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        closePreview();
+      }
+    });
+
+    modal.addEventListener('cancel', (event) => {
+      event.preventDefault();
+      closePreview();
+    });
+
+    modal.addEventListener('close', resetPreview);
+    closeButton?.addEventListener('click', closePreview);
+  }
+</script>
 
 <style is:global>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; border: 0; }
@@ -93,6 +215,11 @@ import sigBlack from '../assets/sig-black.png';
     --ink-faint: #8a857d;
     --rule: rgba(20, 18, 16, 0.14);
     --rule-strong: rgba(20, 18, 16, 0.28);
+  }
+
+  html.has-doc-modal,
+  html.has-doc-modal body {
+    overflow: hidden;
   }
 
   body {
@@ -110,7 +237,7 @@ import sigBlack from '../assets/sig-black.png';
   .shell { position: relative; min-height: 100vh; }
 
   .curtain {
-    position: fixed;
+    position: absolute;
     inset: 0;
     background: #ffffff;
     mix-blend-mode: difference;
@@ -121,9 +248,7 @@ import sigBlack from '../assets/sig-black.png';
     z-index: 150;
   }
   .toggle:checked ~ .curtain { transform: scaleX(1); }
-
   .sr { position: absolute; width: 1px; height: 1px; clip: rect(1px, 1px, 1px, 1px); overflow: hidden; }
-
   .toggle {
     -webkit-appearance: none;
     appearance: none;
@@ -136,6 +261,7 @@ import sigBlack from '../assets/sig-black.png';
     cursor: pointer;
     background: transparent;
     border: 1px solid var(--rule-strong);
+    border-radius: 18px;
     z-index: 100;
     transition: border-color 200ms ease;
     -webkit-tap-highlight-color: transparent;
@@ -153,15 +279,12 @@ import sigBlack from '../assets/sig-black.png';
   }
   .toggle:checked::after { transform: translateX(18px); }
   .toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-
   main {
     max-width: 680px;
     margin: 0 auto;
     padding: clamp(56px, 10vh, 96px) 32px clamp(72px, 10vh, 120px);
   }
-
   header { margin-bottom: 40px; }
-
   .header-row {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -169,7 +292,6 @@ import sigBlack from '../assets/sig-black.png';
     gap: 24px;
     margin-bottom: 24px;
   }
-
   .wordmark {
     font-family: 'EB Garamond', Georgia, serif;
     font-weight: 400;
@@ -177,7 +299,6 @@ import sigBlack from '../assets/sig-black.png';
     line-height: 1;
     letter-spacing: -0.015em;
   }
-
   .signature {
     width: 104px;
     height: auto;
@@ -185,15 +306,12 @@ import sigBlack from '../assets/sig-black.png';
     transform: translateY(18px) rotate(-2deg);
     transform-origin: bottom right;
   }
-
   header hr {
     border-top: 1px solid var(--rule);
     width: 100%;
   }
-
   section { margin-bottom: 40px; }
   section:last-of-type { margin-bottom: 0; }
-
   h2 {
     font-family: 'Inter', sans-serif;
     font-size: 14px;
@@ -203,7 +321,6 @@ import sigBlack from '../assets/sig-black.png';
     color: var(--ink-faint);
     margin-bottom: 20px;
   }
-
   .about p {
     font-size: 14px;
     line-height: 1.7;
@@ -211,7 +328,6 @@ import sigBlack from '../assets/sig-black.png';
     color: var(--ink);
     max-width: 56ch;
   }
-
   .projects { border-top: 1px solid var(--rule); }
   .project {
     padding: 22px 0;
@@ -220,110 +336,231 @@ import sigBlack from '../assets/sig-black.png';
   .project .title {
     font-family: 'EB Garamond', Georgia, serif;
     font-size: 22px;
-    font-weight: 500;
-    letter-spacing: -0.005em;
     line-height: 1.2;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
   }
   .project .title a {
     color: inherit;
     text-decoration: none;
     border-bottom: 1px solid transparent;
-    transition: border-color 150ms ease;
+    transition: border-color 160ms ease;
   }
-  .project .title a:hover { border-bottom-color: var(--ink); }
-  .project .tagline {
-    font-size: 14px;
+  .project .title a:hover { border-color: currentColor; }
+  .tagline {
+    font-size: 13px;
     color: var(--ink-soft);
-    line-height: 1.55;
-    margin-bottom: 10px;
-    max-width: 52ch;
+    margin-bottom: 14px;
+    text-transform: lowercase;
   }
-  .project .project-notes {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .project-notes {
+    padding-left: 18px;
+    color: var(--ink);
+  }
+  .project-notes li {
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .project-artifacts {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 16px;
   }
-  .project .project-notes li {
-    font-size: 14px;
-    line-height: 1.55;
+  .project-artifacts a {
+    font-size: 13px;
     color: var(--ink-soft);
-    max-width: 56ch;
-    padding-left: 14px;
-    position: relative;
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule-strong);
   }
-  .project .project-notes li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.72em;
-    width: 6px;
-    height: 1px;
-    background: var(--ink-faint);
+  .project-artifacts a:hover { color: var(--ink); border-color: currentColor; }
+  .links-section {
+    display: flex;
+    justify-content: center;
+    padding-top: 4px;
   }
-
-  .links-section { margin-bottom: 0; }
-
   .links-icons {
     display: flex;
-    gap: 22px;
     align-items: center;
     justify-content: center;
+    gap: 16px;
+    color: var(--ink-faint);
   }
   .links-icons a {
-    color: var(--ink);
+    color: inherit;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    transition: color 150ms ease, background 150ms ease;
+    transition: color 160ms ease, transform 160ms ease;
   }
   .links-icons a:hover {
     color: var(--ink);
-    background: var(--rule);
+    transform: translateY(-1px);
   }
-  .links-icons svg { display: block; }
-
-  .colophon {
-    margin-top: 32px;
-    padding-top: 20px;
-    border-top: 1px solid var(--rule);
+  .doc-modal {
+    inset: 0;
+    margin: auto;
+    width: min(1040px, calc(100vw - 32px));
+    max-width: 1040px;
+    height: min(88vh, 920px);
+    max-height: 920px;
+    padding: 0;
+    border: 1px solid var(--rule-strong);
+    border-radius: 18px;
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: 0 30px 90px rgba(12, 11, 10, 0.28);
+    transform-origin: center center;
+  }
+  .toggle:checked ~ main .doc-modal {
+    --paper: #141210;
+    --ink: #e8e6e1;
+    --ink-soft: #b7b4ae;
+    --ink-faint: #7a756d;
+    --rule: rgba(232, 230, 225, 0.14);
+    --rule-strong: rgba(232, 230, 225, 0.28);
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+  }
+  .toggle:checked ~ main .doc-modal[open]::backdrop {
+    background: rgba(0, 0, 0, 0.68);
+  }
+  .toggle:checked ~ main .doc-modal__body iframe {
+    background: #1d1b18;
+  }
+  @keyframes doc-iris-in {
+    from { opacity: 0; transform: scale(0.72); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes doc-iris-out {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0; transform: scale(0.72); }
+  }
+  @keyframes doc-backdrop-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes doc-backdrop-out {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+  }
+  .doc-modal[open] {
+    animation: doc-iris-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .doc-modal[open]::backdrop {
+    background: rgba(20, 18, 16, 0.52);
+    backdrop-filter: blur(3px);
+    animation: doc-backdrop-in 260ms linear;
+  }
+  .doc-modal.is-closing {
+    animation: doc-iris-out 220ms ease-in forwards;
+  }
+  .doc-modal.is-closing::backdrop {
+    animation: doc-backdrop-out 220ms linear forwards;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .doc-modal[open],
+    .doc-modal[open]::backdrop,
+    .doc-modal.is-closing,
+    .doc-modal.is-closing::backdrop {
+      animation-duration: 0ms;
+    }
+  }
+  .doc-modal__surface {
     display: flex;
-    justify-content: center;
-    gap: 20px;
+    flex-direction: column;
+    height: 100%;
+  }
+  .doc-modal__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .doc-modal__eyebrow {
     font-size: 11px;
-    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+  .doc-modal h3 {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: clamp(24px, 3vw, 30px);
+    line-height: 1.1;
+    font-weight: 400;
+  }
+  .doc-modal__close {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1px solid var(--rule-strong);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 12px;
     letter-spacing: 0.12em;
     text-transform: lowercase;
-    color: var(--ink-faint);
+    cursor: pointer;
+    transition: color 160ms ease, border-color 160ms ease;
   }
-  .colophon .heart {
-    display: inline-block;
-    vertical-align: -1px;
-    margin-left: 2px;
-    color: var(--ink-faint);
-  }
-  .colophon a {
-    color: inherit;
-    border-bottom: 1px solid var(--rule);
-    padding-bottom: 1px;
-    transition: border-color 150ms ease, color 150ms ease;
-  }
-  .colophon a:hover {
+  .doc-modal__close:hover {
     color: var(--ink);
-    border-bottom-color: var(--ink);
+    border-color: currentColor;
   }
-
-  @media (max-width: 560px) {
-    main { padding: 72px 22px 80px; }
-    header { margin-bottom: 56px; }
-    .header-row { gap: 16px; }
-    .signature { width: 72px; }
-    .links-icons { gap: 18px; }
+  .doc-modal__close:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+  }
+  .doc-modal__body {
+    flex: 1;
+    min-height: 0;
+    padding: 0 22px 22px;
+  }
+  .doc-modal__body iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #f8f7f4;
+    border-radius: 12px;
+  }
+  .colophon {
+    margin-top: 44px;
+    color: var(--ink-faint);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: lowercase;
+    text-align: center;
+  }
+  .heart { transform: translateY(1px); }
+  @media (max-width: 640px) {
+    main { padding-inline: 22px; }
+    .header-row {
+      grid-template-columns: 1fr;
+      align-items: start;
+      gap: 12px;
+    }
+    .signature {
+      justify-self: start;
+      transform: translateY(0) rotate(-2deg);
+    }
+    .toggle {
+      top: 18px;
+      right: 18px;
+    }
+    .doc-modal {
+      width: calc(100vw - 18px);
+      height: calc(100vh - 28px);
+    }
+    .doc-modal__header,
+    .doc-modal__body {
+      padding-inline: 16px;
+    }
+    .doc-modal__header {
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+    .doc-modal__body {
+      padding-bottom: 16px;
+    }
   }
 </style>
