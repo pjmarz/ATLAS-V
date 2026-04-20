@@ -44,6 +44,7 @@ export const projects: Project[] = [
     tags: ['program design', 'enablement', 'onboarding', 'operations'],
     artifacts: [
       { label: 'overview pdf', href: '/artifacts/initiatives/project-lazarus/project-lazarus-overview.pdf' },
+      { label: 'presentation deck', href: '/artifacts/initiatives/project-lazarus/project-lazarus-presentation-deck.pdf' },
     ],
   },
   {
@@ -58,6 +59,7 @@ export const projects: Project[] = [
     tags: ['sales ops', 'change management', 'gamification', 'program leadership'],
     artifacts: [
       { label: 'overview pdf', href: '/artifacts/initiatives/prometheus-initiative/prometheus-initiative-overview.pdf' },
+      { label: 'presentation deck', href: '/artifacts/initiatives/prometheus-initiative/prometheus-initiative-presentation-deck.pdf' },
     ],
   },
 ];
