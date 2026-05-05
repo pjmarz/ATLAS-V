@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.1] — 2026-05-04
+
+### Changed
+- Upgraded Astro from 6.1.6 → 6.2.2 (no functional changes for this site; brings in upstream bug fixes and keeps us within one minor of the 7.x line currently in alpha).
+
 ## [0.6.0] — 2026-05-04
 
 ### Added
