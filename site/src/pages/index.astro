@@ -239,7 +239,7 @@ const initiatives = projects.filter((project) => project.category === 'initiativ
   body {
     background: var(--paper);
     color: var(--ink);
-    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    font-family: var(--font-inter);
     font-size: 16px;
     font-weight: 400;
     line-height: 1.65;
@@ -359,7 +359,7 @@ const initiatives = projects.filter((project) => project.category === 'initiativ
     margin-bottom: 24px;
   }
   .wordmark {
-    font-family: 'EB Garamond', Georgia, serif;
+    font-family: var(--font-eb-garamond);
     font-weight: 400;
     font-size: clamp(32px, 5vw, 44px);
     line-height: 1;
@@ -379,7 +379,7 @@ const initiatives = projects.filter((project) => project.category === 'initiativ
   section { margin-bottom: 40px; }
   section:last-of-type { margin-bottom: 0; }
   h2 {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter);
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.16em;
@@ -400,7 +400,7 @@ const initiatives = projects.filter((project) => project.category === 'initiativ
     border-bottom: 1px solid var(--rule);
   }
   .project .title {
-    font-family: 'EB Garamond', Georgia, serif;
+    font-family: var(--font-eb-garamond);
     font-size: 22px;
     line-height: 1.2;
     margin-bottom: 6px;
@@ -557,7 +557,7 @@ const initiatives = projects.filter((project) => project.category === 'initiativ
     margin-bottom: 6px;
   }
   .doc-modal h3 {
-    font-family: 'EB Garamond', Georgia, serif;
+    font-family: var(--font-eb-garamond);
     font-size: clamp(24px, 3vw, 30px);
     line-height: 1.1;
     font-weight: 400;

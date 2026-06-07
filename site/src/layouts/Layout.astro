@@ -1,4 +1,6 @@
 ---
+import { Font } from 'astro:assets';
+
 interface Props {
   title?: string;
   description?: string;
@@ -8,6 +10,8 @@ const {
   title = 'Peter J. Marino',
   description = 'Professional home page for Peter J. Marino',
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -16,16 +20,21 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#e8e6e1" />
+    <meta name="theme-color" content="#141210" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Peter J. Marino" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <Font cssVariable="--font-eb-garamond" preload />
+    <Font cssVariable="--font-inter" preload />
     <title>{title}</title>
   </head>
   <body>
