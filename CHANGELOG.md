@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - ci: verified the automated deploy pipeline (push → GitHub Actions → Cloudflare Pages).
+- Upgraded Astro from 6.2.2 → 6.4.4 (dependency update; no functional changes for this site).
 
 ## [0.6.1] — 2026-05-04
 
