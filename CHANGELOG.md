@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - ci: verified the automated deploy pipeline (push → GitHub Actions → Cloudflare Pages).
 - Upgraded Astro from 6.2.2 → 6.4.4 (dependency update; no functional changes for this site).
+- Moved the site to a new primary domain: `www.peterjmarino.com` → apex `peterjamarino.com`. The old domain is kept and 301-redirected (path-preserving) to the new one.
+- Updated the contact email to `peterjamarino@gmail.com`.
 
 ## [0.6.1] — 2026-05-04
 
