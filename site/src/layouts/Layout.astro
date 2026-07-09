@@ -7,8 +7,8 @@ interface Props {
 }
 
 const {
-  title = 'Peter J. Marino',
-  description = 'Professional home page for Peter J. Marino',
+  title = 'Peter J. A. Marino',
+  description = 'Professional home page for Peter J. A. Marino',
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -27,7 +27,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
-    <meta property="og:site_name" content="Peter J. Marino" />
+    <meta property="og:site_name" content="Peter J. A. Marino" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
