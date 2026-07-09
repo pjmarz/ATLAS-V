@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgraded Astro from 6.2.2 → 6.4.4 (dependency update; no functional changes for this site).
 - Moved the site to a new primary domain: `www.peterjmarino.com` → apex `peterjamarino.com`. The old domain is kept and 301-redirected (path-preserving) to the new one.
 - Updated the contact email to `peterjamarino@gmail.com`.
+- Updated the display name site-wide from "Peter J. Marino" to "Peter J. A. Marino" (wordmark, page title, meta description, `og:site_name`) to match the new domain and email.
 
 ## [0.6.1] — 2026-05-04
 
