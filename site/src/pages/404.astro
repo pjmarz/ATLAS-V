@@ -1,0 +1,38 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="404 — Peter J. A. Marino" description="Page not found">
+  <main class="lost">
+    <h1>404</h1>
+    <p>this page drifted off this world.</p>
+    <a href="/">back home</a>
+  </main>
+</Layout>
+
+<style>
+  .lost {
+    min-height: 100svh;
+    display: grid;
+    place-content: center;
+    gap: 0.75rem;
+    text-align: center;
+    font-family: var(--font-eb-garamond, Georgia, serif);
+  }
+
+  .lost h1 {
+    font-size: 4rem;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .lost p {
+    margin: 0;
+    font-family: var(--font-inter, system-ui, sans-serif);
+  }
+
+  .lost a {
+    color: inherit;
+    font-family: var(--font-inter, system-ui, sans-serif);
+  }
+</style>
