@@ -7,12 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] — 2026-07-13
+
+### Added
+- `robots.txt`, `@astrojs/sitemap` integration, and a 404 page — the new domain now has proper crawl signals and real 404 responses instead of soft-404s (every unknown URL previously served the homepage with HTTP 200).
+- Open Graph image (`og.png`, generated from the PJM wordmark), `twitter:card summary_large_image`, and JSON-LD `Person` structured data for richer link previews and search identity on the new domain.
+- `/.well-known/security.txt` with the current contact address.
+- Content-Security-Policy header tailored to the site (self-hosted assets, inline styles/scripts, same-origin PDF preview frames).
+- PR build check CI and Dependabot (backfilled from 2026-06-07, PR #2).
+
 ### Changed
-- ci: verified the automated deploy pipeline (push → GitHub Actions → Cloudflare Pages).
-- Upgraded Astro from 6.2.2 → 6.4.4 (dependency update; no functional changes for this site).
+- Upgraded Astro 6.4.4 → 7.x (clears all open Dependabot security alerts: astro SSRF/XSS, vite fs.deny/launch-editor, esbuild) and added `@astrojs/sitemap`.
+- Extended HSTS to `includeSubDomains; preload`.
 - Moved the site to a new primary domain: `www.peterjmarino.com` → apex `peterjamarino.com`. The old domain is kept and 301-redirected (path-preserving) to the new one.
 - Updated the contact email to `peterjamarino@gmail.com`.
 - Updated the display name site-wide from "Peter J. Marino" to "Peter J. A. Marino" (wordmark, page title, meta description, `og:site_name`) to match the new domain and email.
+- Updated the clearance line in the about section (2026-07-05, backfilled).
+- Self-hosted the fonts via Astro's Fonts API, added canonical/OG meta, and hardened response headers; migrated the Pages deploy to `wrangler-action` v4 (backfilled from 2026-06-07, PR #2).
+- ci: verified the automated deploy pipeline (push → GitHub Actions → Cloudflare Pages).
+- Upgraded Astro from 6.2.2 → 6.4.4 (dependency update; no functional changes for this site).
+- README: corrected the fonts row (self-hosted at build, not runtime Google Fonts CDN).
 
 ## [0.6.1] — 2026-05-04
 

@@ -10,8 +10,8 @@ Built with [Astro](https://astro.build) and deployed to [Cloudflare Pages](https
 
 | Layer | Choice |
 |---|---|
-| Framework | Astro 6.4.4 |
+| Framework | Astro 7 |
 | Hosting | Cloudflare Pages |
 | CI/CD | GitHub Actions |
-| Fonts | Google Fonts (EB Garamond, Inter) |
+| Fonts | Self-hosted via Astro Fonts API (EB Garamond, Inter — Google provider, fetched at build) |
 | Node | >= 22.12.0 |
