@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgraded Astro 7.0.9 → 7.1.6 and refreshed transitive build dependencies (sharp 0.35.3, svgo 4.0.2, esbuild 0.28.1, postcss 8.5.25), clearing all open advisories — `npm audit` now reports 0 vulnerabilities. Build-time dependencies only; no runtime change for the static site.
 - Bumped `actions/setup-node` v6 → v7 in both workflows.
 
+### Fixed
+- Dependabot now groups security updates as well as version updates. `applies-to` defaults to `version-updates`, so advisory-driven bumps were opening one PR each and could duplicate a package already covered by the version-update group (e.g. two concurrent `astro` PRs).
+
 ## [0.7.0] — 2026-07-13
 
 ### Added

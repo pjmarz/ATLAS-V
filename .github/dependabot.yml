@@ -5,7 +5,16 @@ updates:
     schedule:
       interval: weekly
     groups:
+      # `applies-to` defaults to version-updates, so security updates are
+      # ungrouped unless a second group opts them in. Without the security
+      # group, advisory-driven bumps open one PR each — and can duplicate a
+      # package already covered by the version-update group.
       npm:
+        applies-to: version-updates
+        patterns:
+          - "*"
+      npm-security:
+        applies-to: security-updates
         patterns:
           - "*"
 
@@ -15,5 +24,10 @@ updates:
       interval: weekly
     groups:
       actions:
+        applies-to: version-updates
+        patterns:
+          - "*"
+      actions-security:
+        applies-to: security-updates
         patterns:
           - "*"
