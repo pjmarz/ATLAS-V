@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Upgraded Astro 7.1.6 → 7.2.9 and patched the transitive `nanoid` dependency to 3.3.18, clearing a high-severity advisory (custom generators could loop indefinitely when size is zero). `npm audit` reports 0 vulnerabilities. Build-time dependencies only; no runtime change for the static site.
+
 ## [0.7.1] — 2026-08-09
 
 ### Changed
