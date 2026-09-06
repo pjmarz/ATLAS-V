@@ -1,7 +1,76 @@
-.DS_Store
+# ATLAS-V — public Astro site deployed to Cloudflare Pages.
+# Everything tracked here is published, so this file's job is to keep local
+# build state, credentials and scratch files OUT of a public repo.
+#
+# Modelled on ARK's explicit template rather than HELIOS's broad *secret* /
+# *token* / *password* wildcards. Those wildcards silently swallow innocent
+# paths — a directory named secret-gate/ or a doc named password-policy.md
+# would vanish with no error. An explicit list is auditable; a wildcard is a
+# trap you find months later. (Learned the hard way, homelab-agent 2026-09-06.)
+#
+# NOTE: site/.vscode/{extensions,launch}.json ARE tracked on purpose — shared
+# editor config for contributors. Do not add a blanket .vscode/ rule.
+
+# ── Dependencies and build output ─────────────────────────────────────────
 node_modules/
 dist/
+.astro/
 .build/
 .cache/
+.tmp/
+.output/
+
+# ── Cloudflare Pages / Wrangler local state ───────────────────────────────
+# .dev.vars is wrangler's LOCAL SECRETS file — the highest-value miss here.
+.wrangler/
+.dev.vars
+.dev.vars.*
+
+# ── Environment and credentials ───────────────────────────────────────────
 .env
 .env.*
+!.env.example
+.envrc
+env.sh
+secrets
+secrets/
+credentials
+credentials.*
+*.secret
+*.secrets
+*.key
+*.pem
+*.p12
+*.pfx
+*.cer
+*.crt
+*.p7b
+*.p7c
+*.der
+
+# ── Logs ──────────────────────────────────────────────────────────────────
+logs/
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── Recovery and scratch artifacts ────────────────────────────────────────
+*.prebak*
+*.bak
+*.backup
+*.old
+*.orig
+*.tmp
+*~
+
+# ── Editor and OS ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.swo
+.cursor/
+.claude/
