@@ -69,7 +69,7 @@ npm run build     # static output in site/dist
 npm run preview   # serve the built output
 ```
 
-Node 22.12 or newer.
+Node 22.22.0 or newer. CI and deployment builds use Node 22.23.3.
 
 ## 📁 Layout
 
