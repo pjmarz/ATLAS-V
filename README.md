@@ -6,13 +6,11 @@
 
 ---
 
-**[peterjamarino.com](https://peterjamarino.com/)** · Astro 7 · Cloudflare Pages · deployed on every push to `main`
+**[peterjamarino.com](https://peterjamarino.com/)** · Astro 7 · Cloudflare Pages
 
 ## 🎯 What is ATLAS-V?
 
 ATLAS-V is the source of my personal home page. One page, no framework runtime in the browser, no analytics, no cookies. It says who I am, shows the two homelab projects I build in public ([LUMINAL](https://github.com/pjmarz/LUMINAL) and [HELIOS](https://github.com/pjmarz/HELIOS)), and keeps the write-ups for two strategic initiatives from my product work.
-
-Unlike the homelab repos, this one is meant to be built. Clone it, run the site locally, and every change you push to `main` is live within a couple of minutes.
 
 <div align="center">
   <a href="https://peterjamarino.com/">
